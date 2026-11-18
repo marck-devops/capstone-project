@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#232F3E"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect width="1000" height="760" fill="#FFFFFF"/>
+
+  <!-- title -->
+  <text x="500" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#232F3E">initial-infra: AWS architecture</text>
+
+  <!-- Internet / users -->
+  <rect x="420" y="56" width="160" height="50" rx="25" fill="#F2F3F3" stroke="#232F3E" stroke-width="1.5"/>
+  <text x="500" y="80" text-anchor="middle" font-size="15" font-weight="bold" fill="#232F3E">Internet</text>
+  <text x="500" y="97" text-anchor="middle" font-size="11" fill="#545B64">users · HTTP 80 / SSH 22</text>
+
+  <!-- AWS Cloud -->
+  <rect x="30" y="130" width="940" height="600" rx="6" fill="none" stroke="#232F3E" stroke-width="2"/>
+  <rect x="30" y="130" width="96" height="26" fill="#232F3E"/>
+  <text x="78" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="#FFFFFF">AWS Cloud</text>
+
+  <!-- Region -->
+  <rect x="55" y="170" width="890" height="540" rx="6" fill="none" stroke="#147EBA" stroke-width="1.5" stroke-dasharray="8 5"/>
+  <text x="70" y="192" font-size="13" font-weight="bold" fill="#147EBA">Region: var.aws_region (default us-east-1)</text>
+
+  <!-- VPC -->
+  <rect x="80" y="235" width="840" height="455" rx="6" fill="#F7F5FF" stroke="#8C4FFF" stroke-width="2"/>
+  <rect x="80" y="235" width="250" height="26" fill="#8C4FFF"/>
+  <text x="92" y="253" font-size="13" font-weight="bold" fill="#FFFFFF">VPC  capstone-vpc · 10.0.0.0/16</text>
+  <text x="900" y="253" text-anchor="end" font-size="11" fill="#545B64">DNS support + hostnames enabled</text>
+
+  <!-- Internet Gateway (on VPC edge) -->
+  <rect x="420" y="208" width="160" height="54" rx="6" fill="#8C4FFF" stroke="#5A2DB3" stroke-width="1.5"/>
+  <text x="500" y="231" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFFFFF">Internet Gateway</text>
+  <text x="500" y="249" text-anchor="middle" font-size="11" fill="#EDE4FF">capstone-igw</text>
+
+  <!-- Internet -> IGW -->
+  <line x1="500" y1="106" x2="500" y2="206" stroke="#232F3E" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+
+  <!-- Route table -->
+  <rect x="390" y="290" width="220" height="56" rx="6" fill="#FFFFFF" stroke="#8C4FFF" stroke-width="1.5"/>
+  <text x="500" y="312" text-anchor="middle" font-size="13" font-weight="bold" fill="#232F3E">Public Route Table</text>
+  <text x="500" y="330" text-anchor="middle" font-size="11" fill="#545B64">capstone-public-rt · 0.0.0.0/0 → IGW</text>
+  <line x1="500" y1="262" x2="500" y2="288" stroke="#232F3E" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- AZ 1 -->
+  <rect x="105" y="370" width="380" height="300" rx="6" fill="none" stroke="#147EBA" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="120" y="390" font-size="12" font-weight="bold" fill="#147EBA">Availability Zone 1</text>
+
+  <!-- AZ 2 -->
+  <rect x="515" y="370" width="380" height="300" rx="6" fill="none" stroke="#147EBA" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="530" y="390" font-size="12" font-weight="bold" fill="#147EBA">Availability Zone 2</text>
+
+  <!-- route table associations -->
+  <path d="M440,346 L295,404" fill="none" stroke="#232F3E" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <path d="M560,346 L705,404" fill="none" stroke="#232F3E" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <text x="330" y="368" text-anchor="middle" font-size="10" fill="#545B64">association</text>
+  <text x="670" y="368" text-anchor="middle" font-size="10" fill="#545B64">association</text>
+
+  <!-- Public Subnet 1 -->
+  <rect x="125" y="405" width="340" height="245" rx="6" fill="#E9F3E6" stroke="#7AA116" stroke-width="2"/>
+  <rect x="125" y="405" width="340" height="26" fill="#7AA116"/>
+  <text x="137" y="423" font-size="13" font-weight="bold" fill="#FFFFFF">Public Subnet 1 · 10.0.1.0/24</text>
+  <text x="137" y="448" font-size="11" fill="#3B5A0A">capstone-public-subnet-1 · map_public_ip_on_launch</text>
+
+  <!-- Security group -->
+  <rect x="150" y="465" width="290" height="165" rx="4" fill="none" stroke="#DD344C" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="162" y="483" font-size="12" font-weight="bold" fill="#DD344C">Security Group · capstone-web-sg</text>
+  <text x="162" y="499" font-size="10" fill="#545B64">in: SSH 22 (allowed_ssh_cidr) · HTTP 80 (any)</text>
+  <text x="162" y="513" font-size="10" fill="#545B64">out: all traffic</text>
+
+  <!-- EC2 -->
+  <rect x="185" y="525" width="220" height="92" rx="6" fill="#ED7100" stroke="#B35500" stroke-width="1.5"/>
+  <text x="295" y="547" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFFFFF">EC2 · capstone-web</text>
+  <text x="295" y="564" text-anchor="middle" font-size="11" fill="#FFF3E6">Amazon Linux 2023 · t3.micro</text>
+  <text x="295" y="580" text-anchor="middle" font-size="11" fill="#FFF3E6">Public IP · nginx (user data)</text>
+  <text x="295" y="596" text-anchor="middle" font-size="11" fill="#FFF3E6">8 GB gp3 encrypted · IMDSv2</text>
+  <text x="295" y="610" text-anchor="middle" font-size="10" fill="#FFF3E6">key pair: var.key_name</text>
+
+  <!-- Public Subnet 2 -->
+  <rect x="535" y="405" width="340" height="245" rx="6" fill="#E9F3E6" stroke="#7AA116" stroke-width="2"/>
+  <rect x="535" y="405" width="340" height="26" fill="#7AA116"/>
+  <text x="547" y="423" font-size="13" font-weight="bold" fill="#FFFFFF">Public Subnet 2 · 10.0.2.0/24</text>
+  <text x="547" y="448" font-size="11" fill="#3B5A0A">capstone-public-subnet-2 · map_public_ip_on_launch</text>
+  <rect x="580" y="500" width="250" height="80" rx="6" fill="none" stroke="#7AA116" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="705" y="532" text-anchor="middle" font-size="12" fill="#3B5A0A">No resources yet</text>
+  <text x="705" y="552" text-anchor="middle" font-size="11" fill="#545B64">second AZ for a future ALB / scaling</text>
+</svg>
