@@ -1,10 +1,10 @@
 # Example 02: network and compute as separate stacks
 
-This is the same setup as `../initial-infra`, split into two Terraform root modules. Each module has its **own state file**.
-`initial-infra/` is not changed.
+This is the same setup as `../01-initial-infra`, split into two Terraform root modules. Each module has its **own state file**.
+`01-initial-infra/` is not changed.
 
 ```
-example-02/
+02-example/
 ├── network/   VPC, IGW, 2 public subnets, route table, security group   -> network/terraform.tfstate
 └── compute/   SSH key pair + EC2 instance (nginx)                       -> compute/terraform.tfstate
 ```
@@ -19,7 +19,7 @@ example-02/
 | Public subnets | in that VPC, `Tier = public`, `Project = <project>` |
 | Security group | in that VPC, `Name = <project>-web-sg`, `Project = <project>` |
 
-`project_name` defaults to `capstone-ex02`, so these lookups never match the VPC that `initial-infra` created (`Project = capstone`).
+`project_name` defaults to `capstone-ex02`, so these lookups never match the VPC that `01-initial-infra` created (`Project = capstone`).
 Both stacks must use the same `project_name` and `aws_region`.
 
 ## Key pair
@@ -33,7 +33,7 @@ The private key is also stored in `compute/terraform.tfstate`, so keep that stat
 Apply the network first, then compute:
 
 ```bash
-cd example-02/network
+cd 02-example/network
 cp terraform.tfvars.example terraform.tfvars   # set allowed_ssh_cidr to your IP/32
 terraform init && terraform apply
 
@@ -50,11 +50,11 @@ Open `http://<instance_public_ip>` to see the nginx page.
 Destroy in reverse order. The network cannot be deleted while the instance still uses it.
 
 ```bash
-cd example-02/compute && terraform destroy
+cd 02-example/compute && terraform destroy
 cd ../network       && terraform destroy
 ```
 
 ## Notes
-- Default CIDR is `10.20.0.0/16`, so it does not overlap `initial-infra` (`10.0.0.0/16`).
+- Default CIDR is `10.20.0.0/16`, so it does not overlap `01-initial-infra` (`10.0.0.0/16`).
 - To recreate the EC2 instance, run `apply` or `destroy` in `compute/` only. The network and its state are not affected.
 - If the network stack is not applied yet, `compute` plans fail with "no matching VPC found".
