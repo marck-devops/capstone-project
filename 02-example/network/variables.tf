@@ -22,10 +22,10 @@ variable "public_subnet_cidrs" {
   default     = ["10.20.1.0/24", "10.20.2.0/24"]
 }
 
-variable "allowed_ssh_cidr" {
-  description = "CIDR allowed to SSH in. Restrict this to your own IP (e.g. 1.2.3.4/32)."
-  type        = string
-  default     = "0.0.0.0/0"
+variable "private_subnet_cidrs" {
+  description = "CIDR blocks for the private subnets (one per AZ)"
+  type        = list(string)
+  default     = ["10.20.10.0/24", "10.20.20.0/24"]
 }
 
 variable "aws_profile" {
@@ -33,3 +33,4 @@ variable "aws_profile" {
   type        = string
   default     = "default"
 }
+

@@ -22,19 +22,27 @@ data "aws_subnets" "public" {
   }
 }
 
+data "aws_subnets" "private" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
+
+  tags = {
+    Tier    = "private"
+    Project = var.project_name
+  }
+}
+
 # Read each subnet so they can be ordered by AZ (aws_subnets returns IDs in no fixed order).
 data "aws_subnet" "public" {
   for_each = toset(data.aws_subnets.public.ids)
   id       = each.value
 }
 
-data "aws_security_group" "web" {
-  vpc_id = data.aws_vpc.main.id
-
-  tags = {
-    Name    = "${var.project_name}-web-sg"
-    Project = var.project_name
-  }
+data "aws_subnet" "private" {
+  for_each = toset(data.aws_subnets.private.ids)
+  id       = each.value
 }
 
 # Latest Amazon Linux 2023 AMI
@@ -47,5 +55,11 @@ locals {
     for s in sort([for s in data.aws_subnet.public : "${s.availability_zone}|${s.id}"]) :
     split("|", s)[1]
   ]
+  private_subnets_by_az = [
+    for s in sort([for s in data.aws_subnet.private : "${s.availability_zone}|${s.id}"]) :
+    split("|", s)[1]
+  ]
   instance_subnet_id = local.public_subnets_by_az[var.subnet_index]
+  # Same AZ as the web instance, so web -> redis traffic stays in one AZ.
+  redis_subnet_id = local.private_subnets_by_az[var.subnet_index]
 }

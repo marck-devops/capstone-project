@@ -3,10 +3,12 @@
 This is the same setup as `../01-initial-infra`, split into two Terraform root modules. Each module has its **own state file**.
 `01-initial-infra/` is not changed.
 
+![Architecture](architecture.svg)
+
 ```
 02-example/
-├── network/   VPC, IGW, 2 public subnets, route table, security group   -> network/terraform.tfstate
-└── compute/   SSH key pair + EC2 instance (nginx)                       -> compute/terraform.tfstate
+├── network/   VPC, IGW, public/private subnets, NAT gateway, route tables -> network/terraform.tfstate
+└── compute/   SSH key pair, web + redis security groups, EC2 instances    -> compute/terraform.tfstate
 ```
 
 ## How compute finds the network
@@ -17,7 +19,9 @@ This is the same setup as `../01-initial-infra`, split into two Terraform root m
 |---|---|
 | VPC | `Name = <project>-vpc`, `Project = <project>` |
 | Public subnets | in that VPC, `Tier = public`, `Project = <project>` |
-| Security group | in that VPC, `Name = <project>-web-sg`, `Project = <project>` |
+| Private subnets | in that VPC, `Tier = private`, `Project = <project>` |
+
+The security groups (`<project>-web-sg` and `<project>-redis-sg`) are created in `compute/`. Redis accepts port 6379 and SSH only from the web security group.
 
 `project_name` defaults to `capstone-ex02`, so these lookups never match the VPC that `01-initial-infra` created (`Project = capstone`).
 Both stacks must use the same `project_name` and `aws_region`.
@@ -34,16 +38,16 @@ Apply the network first, then compute:
 
 ```bash
 cd 02-example/network
-cp terraform.tfvars.example terraform.tfvars   # set allowed_ssh_cidr to your IP/32
+cp terraform.tfvars.example terraform.tfvars
 terraform init && terraform apply
 
 cd ../compute
-cp terraform.tfvars.example terraform.tfvars
+cp terraform.tfvars.example terraform.tfvars   # set allowed_ssh_cidr to your IP/32
 terraform init && terraform apply
 terraform output ssh_command
 ```
 
-Open `http://<instance_public_ip>` to see the nginx page.
+Open `http://<instance_public_ip>` to see the Python app talking to Redis (each refresh bumps a visits counter).
 
 ## Tear down
 
