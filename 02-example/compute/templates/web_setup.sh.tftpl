@@ -1,5 +1,10 @@
 #!/bin/bash
+# Run by the terraform_data.web_setup provisioner (not user_data).
+# Safe to re-run: every step is idempotent.
 set -euxo pipefail
+
+# On first boot SSH can come up before cloud-init finishes; wait so dnf isn't locked.
+cloud-init status --wait || true
 
 dnf install -y nginx python3-pip
 pip3 install redis
@@ -44,6 +49,8 @@ location / {
 NGINXEOF
 
 systemctl daemon-reload
-systemctl enable --now redis-check
+systemctl enable redis-check
+systemctl restart redis-check
 nginx -t
-systemctl enable --now nginx
+systemctl enable nginx
+systemctl restart nginx

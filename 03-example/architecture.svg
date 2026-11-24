@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1040" width="1280" height="1040" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#232f3e"/>
+    </marker>
+    <marker id="arrow-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="1040" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="40" y="44" font-size="24" font-weight="bold" fill="#232f3e">Example 03 – reusable modules (network · security_groups · compute)</text>
+  <text x="40" y="68" font-size="14" fill="#4b5563">project_name = capstone-ex03 · one root module, one state file · defaults: NAT gateway off, S3 endpoint on, new key pair</text>
+
+  <!-- User / Internet -->
+  <rect x="445" y="86" width="200" height="52" rx="8" fill="#f3f4f6" stroke="#232f3e" stroke-width="1.5"/>
+  <text x="545" y="108" font-size="15" font-weight="bold" text-anchor="middle" fill="#232f3e">User / Internet</text>
+  <text x="545" y="127" font-size="12" text-anchor="middle" fill="#4b5563">browser · ssh · terraform apply</text>
+
+  <!-- Region -->
+  <rect x="40" y="150" width="1200" height="710" rx="6" fill="none" stroke="#147eba" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="54" y="170" font-size="13" font-weight="bold" fill="#147eba">AWS Region us-east-2</text>
+
+  <!-- VPC -->
+  <rect x="70" y="190" width="920" height="650" rx="6" fill="none" stroke="#248814" stroke-width="2"/>
+  <text x="84" y="212" font-size="13" font-weight="bold" fill="#248814">VPC capstone-ex03-vpc · 10.30.0.0/16</text>
+
+  <!-- AZ A -->
+  <rect x="95" y="250" width="480" height="570" rx="6" fill="none" stroke="#6b7280" stroke-dasharray="4 4"/>
+  <text x="109" y="270" font-size="13" font-weight="bold" fill="#4b5563">Availability Zone A (subnet_index = 0)</text>
+
+  <!-- AZ B -->
+  <rect x="600" y="250" width="325" height="570" rx="6" fill="none" stroke="#6b7280" stroke-dasharray="4 4"/>
+  <text x="614" y="270" font-size="13" font-weight="bold" fill="#4b5563">Availability Zone B</text>
+
+  <!-- Public subnet A -->
+  <rect x="110" y="282" width="450" height="236" rx="4" fill="#e9f5e6" stroke="#248814"/>
+  <text x="122" y="300" font-size="12" font-weight="bold" fill="#248814">Public subnet 1 · 10.30.1.0/24</text>
+  <text x="320" y="512" font-size="11" fill="#248814">public-rt: 0.0.0.0/0 → IGW</text>
+
+  <!-- Private subnet A -->
+  <rect x="110" y="538" width="450" height="268" rx="4" fill="#e6f0fa" stroke="#147eba"/>
+  <text x="122" y="556" font-size="12" font-weight="bold" fill="#147eba">Private subnet 1 · 10.30.10.0/24</text>
+  <text x="122" y="785" font-size="11" fill="#147eba">private-rt: S3 prefix list → S3 endpoint</text>
+  <text x="122" y="799" font-size="11" fill="#147eba">0.0.0.0/0 → NAT gateway (only if enable_nat_gateway)</text>
+
+  <!-- Public subnet B -->
+  <rect x="615" y="282" width="295" height="236" rx="4" fill="#e9f5e6" stroke="#248814"/>
+  <text x="627" y="300" font-size="12" font-weight="bold" fill="#248814">Public subnet 2 · 10.30.2.0/24</text>
+  <text x="762" y="395" font-size="12" text-anchor="middle" fill="#6b7280">no instances</text>
+  <text x="762" y="411" font-size="11" text-anchor="middle" fill="#6b7280">(available via subnet_index = 1)</text>
+  <text x="627" y="512" font-size="11" fill="#248814">public-rt</text>
+
+  <!-- Private subnet B -->
+  <rect x="615" y="538" width="295" height="268" rx="4" fill="#e6f0fa" stroke="#147eba"/>
+  <text x="627" y="556" font-size="12" font-weight="bold" fill="#147eba">Private subnet 2 · 10.30.20.0/24</text>
+  <text x="762" y="630" font-size="12" text-anchor="middle" fill="#6b7280">no instances</text>
+  <text x="762" y="646" font-size="11" text-anchor="middle" fill="#6b7280">(available via subnet_index = 1)</text>
+  <text x="627" y="799" font-size="11" fill="#147eba">private-rt (shared)</text>
+
+  <!-- IGW (on VPC border) -->
+  <rect x="485" y="172" width="120" height="40" rx="6" fill="#8c4fff" stroke="#5b21b6"/>
+  <text x="545" y="190" font-size="12" font-weight="bold" text-anchor="middle" fill="#ffffff">Internet Gateway</text>
+  <text x="545" y="205" font-size="10" text-anchor="middle" fill="#ede9fe">capstone-ex03-igw</text>
+
+  <!-- NAT gateway (optional) -->
+  <rect x="125" y="330" width="140" height="102" rx="6" fill="#f5f0ff" stroke="#8c4fff" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="195" y="352" font-size="13" font-weight="bold" text-anchor="middle" fill="#5b21b6">NAT Gateway</text>
+  <text x="195" y="369" font-size="11" text-anchor="middle" fill="#5b21b6">+ Elastic IP</text>
+  <text x="195" y="389" font-size="11" font-weight="bold" text-anchor="middle" fill="#5b21b6">optional</text>
+  <text x="195" y="404" font-size="10" text-anchor="middle" fill="#5b21b6">enable_nat_gateway</text>
+  <text x="195" y="418" font-size="10" text-anchor="middle" fill="#5b21b6">(default false)</text>
+
+  <!-- Web SG + instance -->
+  <rect x="320" y="312" width="210" height="186" rx="6" fill="none" stroke="#dd344c" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="330" y="328" font-size="11" font-weight="bold" fill="#dd344c">capstone-ex03-web-sg</text>
+  <text x="330" y="342" font-size="10" fill="#dd344c">in: 22 from allowed_ssh_cidr</text>
+  <text x="330" y="355" font-size="10" fill="#dd344c">in: 80 · 8000 from 0.0.0.0/0</text>
+  <rect x="330" y="362" width="190" height="128" rx="6" fill="#ff9900" stroke="#b45309"/>
+  <text x="425" y="381" font-size="13" font-weight="bold" text-anchor="middle" fill="#232f3e">EC2 · capstone-ex03-web</text>
+  <text x="425" y="397" font-size="11" text-anchor="middle" fill="#232f3e">t3.micro · AL2023 · public IP</text>
+  <rect x="340" y="405" width="170" height="77" rx="4" fill="#fff7ed" stroke="#b45309"/>
+  <text x="425" y="421" font-size="11" text-anchor="middle" fill="#232f3e">nginx :80  →  proxy</text>
+  <text x="425" y="437" font-size="11" text-anchor="middle" fill="#232f3e">redis_check.py :8000</text>
+  <text x="425" y="455" font-size="10" text-anchor="middle" fill="#6b7280">setup: terraform_data.web_setup</text>
+  <text x="425" y="469" font-size="10" text-anchor="middle" fill="#6b7280">(provisioner over SSH)</text>
+
+  <!-- Redis SG + instance -->
+  <rect x="320" y="572" width="210" height="182" rx="6" fill="none" stroke="#dd344c" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="330" y="588" font-size="11" font-weight="bold" fill="#dd344c">capstone-ex03-redis-sg</text>
+  <text x="330" y="602" font-size="10" fill="#dd344c">in: 6379 · 22 from web-sg only</text>
+  <rect x="330" y="612" width="190" height="132" rx="6" fill="#ff9900" stroke="#b45309"/>
+  <text x="425" y="632" font-size="12" font-weight="bold" text-anchor="middle" fill="#232f3e">EC2 · capstone-ex03-redis</text>
+  <text x="425" y="648" font-size="11" text-anchor="middle" fill="#232f3e">t3.micro · AL2023 · no public IP</text>
+  <rect x="340" y="656" width="170" height="80" rx="4" fill="#fff7ed" stroke="#b45309"/>
+  <text x="425" y="672" font-size="11" text-anchor="middle" fill="#232f3e">redis6 :6379</text>
+  <text x="425" y="688" font-size="10" text-anchor="middle" fill="#6b7280">bind 0.0.0.0 · protected-mode no</text>
+  <text x="425" y="706" font-size="10" text-anchor="middle" fill="#6b7280">setup: terraform_data.redis_setup</text>
+  <text x="425" y="720" font-size="10" text-anchor="middle" fill="#6b7280">(SSH via web jump host)</text>
+
+  <!-- S3 gateway endpoint (on VPC border) -->
+  <rect x="935" y="688" width="110" height="64" rx="6" fill="#8c4fff" stroke="#5b21b6"/>
+  <text x="990" y="707" font-size="12" font-weight="bold" text-anchor="middle" fill="#ffffff">S3 Gateway</text>
+  <text x="990" y="722" font-size="12" font-weight="bold" text-anchor="middle" fill="#ffffff">Endpoint</text>
+  <text x="990" y="740" font-size="10" text-anchor="middle" fill="#ede9fe">free · default on</text>
+
+  <!-- Amazon S3 -->
+  <rect x="1070" y="680" width="155" height="80" rx="6" fill="#e9f5e6" stroke="#248814" stroke-width="1.5"/>
+  <text x="1147" y="704" font-size="13" font-weight="bold" text-anchor="middle" fill="#232f3e">Amazon S3</text>
+  <text x="1147" y="722" font-size="11" text-anchor="middle" fill="#232f3e">AL2023 package repos</text>
+  <text x="1147" y="740" font-size="10" text-anchor="middle" fill="#4b5563">(dnf install redis6)</text>
+
+  <!-- Key pair -->
+  <rect x="1010" y="200" width="215" height="132" rx="6" fill="#fff7ed" stroke="#b45309" stroke-width="1.5"/>
+  <text x="1117" y="222" font-size="13" font-weight="bold" text-anchor="middle" fill="#232f3e">EC2 Key Pair</text>
+  <text x="1022" y="244" font-size="11" font-weight="bold" fill="#232f3e">create_key_pair = true</text>
+  <text x="1022" y="259" font-size="10" fill="#4b5563">default · new ED25519 key</text>
+  <text x="1022" y="273" font-size="10" fill="#4b5563">capstone-ex03-key.pem in 03-example/</text>
+  <text x="1022" y="294" font-size="11" font-weight="bold" fill="#232f3e">create_key_pair = false</text>
+  <text x="1022" y="309" font-size="10" fill="#4b5563">existing_key_name +</text>
+  <text x="1022" y="323" font-size="10" fill="#4b5563">existing_private_key_path</text>
+  <text x="1117" y="350" font-size="10" text-anchor="middle" fill="#6b7280">used by both instances and</text>
+  <text x="1117" y="363" font-size="10" text-anchor="middle" fill="#6b7280">the provisioners' SSH connections</text>
+
+  <!-- Arrows -->
+  <!-- User -> IGW -->
+  <line x1="545" y1="138" x2="545" y2="170" stroke="#232f3e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="557" y="160" font-size="11" fill="#232f3e">HTTP :80 · app :8000 · SSH :22 (you + terraform provisioners)</text>
+
+  <!-- IGW -> Web -->
+  <path d="M545,212 V420 H532" fill="none" stroke="#232f3e" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Web -> Redis -->
+  <line x1="425" y1="498" x2="425" y2="570" stroke="#232f3e" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="432" y="522" width="122" height="34" fill="#ffffff" opacity="0.9"/>
+  <text x="436" y="536" font-size="11" fill="#232f3e">TCP 6379 (redis-py)</text>
+  <text x="436" y="551" font-size="11" fill="#232f3e">SSH 22 (jump host)</text>
+
+  <!-- Redis -> S3 endpoint -> S3 (outbound) -->
+  <path d="M520,720 H933" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-grey)"/>
+  <text x="625" y="712" font-size="11" fill="#4b5563">dnf → S3 via gateway endpoint</text>
+  <line x1="1045" y1="720" x2="1068" y2="720" stroke="#6b7280" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-grey)"/>
+
+  <!-- Redis -> NAT (optional outbound) -->
+  <path d="M330,690 H195 V434" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="2 4" marker-end="url(#arrow-grey)"/>
+  <text x="203" y="620" font-size="11" fill="#4b5563">full internet</text>
+  <text x="203" y="635" font-size="11" fill="#4b5563">via NAT</text>
+  <text x="203" y="650" font-size="11" fill="#4b5563">(if enabled)</text>
+
+  <!-- NAT -> IGW -->
+  <path d="M195,330 V230 H483" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="2 4" marker-end="url(#arrow-grey)"/>
+
+  <!-- Legend -->
+  <text x="40" y="892" font-size="14" font-weight="bold" fill="#232f3e">Modules</text>
+
+  <rect x="40" y="906" width="16" height="16" rx="3" fill="#8c4fff"/>
+  <rect x="62" y="906" width="16" height="16" rx="3" fill="#e9f5e6" stroke="#248814"/>
+  <rect x="84" y="906" width="16" height="16" rx="3" fill="#e6f0fa" stroke="#147eba"/>
+  <text x="108" y="919" font-size="12" fill="#232f3e"><tspan font-weight="bold">modules/network</tspan> – VPC, IGW, public + private subnets, route tables, optional NAT gateway + EIP, optional S3 gateway endpoint</text>
+
+  <rect x="62" y="932" width="16" height="16" rx="3" fill="none" stroke="#dd344c" stroke-dasharray="3 2"/>
+  <text x="108" y="945" font-size="12" fill="#232f3e"><tspan font-weight="bold">modules/security_groups</tspan> – web-sg, redis-sg</text>
+
+  <rect x="40" y="958" width="16" height="16" rx="3" fill="#ff9900"/>
+  <rect x="62" y="958" width="16" height="16" rx="3" fill="#fff7ed" stroke="#b45309"/>
+  <text x="108" y="971" font-size="12" fill="#232f3e"><tspan font-weight="bold">modules/compute</tspan> – key pair (new or existing), EC2 instances, terraform_data provisioners (no user_data, AMI changes ignored)</text>
+
+  <text x="40" y="1004" font-size="12" fill="#4b5563">The root module wires the modules together by passing IDs (vpc_id, subnet IDs, SG IDs) – no tag lookups, no remote state.</text>
+
+  <line x1="760" y1="888" x2="800" y2="888" stroke="#232f3e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="808" y="892" font-size="12" fill="#232f3e">inbound</text>
+  <line x1="880" y1="888" x2="920" y2="888" stroke="#6b7280" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-grey)"/>
+  <text x="928" y="892" font-size="12" fill="#232f3e">outbound</text>
+  <line x1="1010" y1="888" x2="1050" y2="888" stroke="#6b7280" stroke-width="2" stroke-dasharray="2 4" marker-end="url(#arrow-grey)"/>
+  <text x="1058" y="892" font-size="12" fill="#232f3e">optional outbound</text>
+</svg>

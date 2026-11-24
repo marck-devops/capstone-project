@@ -1,0 +1,16 @@
+aws_region       = "us-east-2"
+project_name     = "capstone-ex03"
+allowed_ssh_cidr = "203.0.113.10/32" # your public IP
+
+# NAT gateway (billed hourly). Off by default: redis reaches the package
+# repos through the free S3 gateway endpoint instead.
+enable_nat_gateway         = false
+enable_s3_gateway_endpoint = true
+
+# Key pair: generate a new one (default) ...
+create_key_pair = true
+
+# ... or use one that already exists in EC2:
+# create_key_pair           = false
+# existing_key_name         = "my-key"
+# existing_private_key_path = "~/.ssh/my-key.pem"
