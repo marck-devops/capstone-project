@@ -29,3 +29,9 @@ variable "enable_s3_gateway_endpoint" {
   type        = bool
   default     = true
 }
+
+variable "enable_ssm_endpoints" {
+  description = "Create interface endpoints (ssm, ssmmessages, ec2messages) in the private subnets so private instances can use Session Manager without a NAT gateway. Each endpoint is billed hourly per AZ."
+  type        = bool
+  default     = false
+}

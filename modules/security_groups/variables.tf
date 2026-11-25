@@ -8,9 +8,9 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "allowed_ssh_cidr" {
-  description = "CIDR allowed to SSH into the web instance"
-  type        = string
+variable "allowed_ssh_cidrs" {
+  description = "CIDRs allowed to SSH into the web instance"
+  type        = list(string)
 }
 
 variable "app_port" {

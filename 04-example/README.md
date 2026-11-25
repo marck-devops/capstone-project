@@ -31,7 +31,7 @@ A validation requires at least one of the two.
 
 ```bash
 cd 04-example
-cp terraform.tfvars.example terraform.tfvars   # set allowed_ssh_cidr etc.
+cp terraform.tfvars.example terraform.tfvars   # set allowed_ssh_cidrs etc.
 terraform init
 terraform apply
 terraform output app_url

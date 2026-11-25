@@ -21,3 +21,8 @@ output "private_egress_ids" {
   description = "IDs of the private subnets' outbound paths (NAT route, S3 endpoint). Lets callers wait for them."
   value       = compact([one(aws_route.private_nat[*].id), one(aws_vpc_endpoint.s3[*].id)])
 }
+
+output "ssm_endpoint_ids" {
+  description = "IDs of the SSM interface endpoints (empty when enable_ssm_endpoints = false)"
+  value       = [for e in aws_vpc_endpoint.ssm : e.id]
+}

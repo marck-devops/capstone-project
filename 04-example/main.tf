@@ -1,3 +1,14 @@
+# Fails the plan when the var file and the workspace disagree, e.g.
+# `terraform apply -var-file=uat.tfvars` while the dev workspace is selected.
+resource "terraform_data" "workspace_guard" {
+  lifecycle {
+    precondition {
+      condition     = var.environment == terraform.workspace
+      error_message = "Var file is for environment \"${var.environment}\" but workspace \"${terraform.workspace}\" is selected. Run: terraform workspace select ${var.environment}"
+    }
+  }
+}
+
 module "network" {
   source = "../modules/network"
 
@@ -13,10 +24,10 @@ module "network" {
 module "security_groups" {
   source = "../modules/security_groups"
 
-  name             = var.project_name
-  vpc_id           = module.network.vpc_id
-  allowed_ssh_cidr = var.allowed_ssh_cidr
-  app_port         = var.app_port
+  name              = var.project_name
+  vpc_id            = module.network.vpc_id
+  allowed_ssh_cidrs = var.allowed_ssh_cidrs
+  app_port          = var.app_port
 }
 
 # Role + instance profile with AmazonSSMManagedInstanceCore for the redis box.

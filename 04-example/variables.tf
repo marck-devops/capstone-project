@@ -1,3 +1,8 @@
+variable "environment" {
+  description = "Environment this var file is for. Must match the selected Terraform workspace, so a var file can't be applied to the wrong state."
+  type        = string
+}
+
 variable "aws_region" {
   description = "AWS region to deploy into"
   type        = string
@@ -64,10 +69,15 @@ variable "enable_ssm_endpoints" {
 }
 
 # ---------------- Security groups ----------------
-variable "allowed_ssh_cidr" {
-  description = "CIDR allowed to SSH into the web instance. Must include the IP you run terraform from (the provisioners SSH in)."
-  type        = string
-  default     = "0.0.0.0/0"
+variable "allowed_ssh_cidrs" {
+  description = "CIDRs allowed to SSH into the web instance. Must include the IP you run terraform from (the provisioners SSH in)."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+
+  validation {
+    condition     = length(var.allowed_ssh_cidrs) > 0 && alltrue([for c in var.allowed_ssh_cidrs : can(cidrhost(c, 0))])
+    error_message = "allowed_ssh_cidrs must be a non-empty list of valid CIDRs, e.g. [\"198.51.100.7/32\"]."
+  }
 }
 
 variable "app_port" {

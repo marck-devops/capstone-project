@@ -80,3 +80,16 @@ variable "private_egress_ids" {
   type        = list(string)
   default     = []
 }
+
+# ---------------- IAM ----------------
+variable "web_iam_instance_profile" {
+  description = "IAM instance profile name for the web instance (null = none)"
+  type        = string
+  default     = null
+}
+
+variable "redis_iam_instance_profile" {
+  description = "IAM instance profile name for the redis instance, e.g. one with AmazonSSMManagedInstanceCore for Session Manager (null = none)"
+  type        = string
+  default     = null
+}

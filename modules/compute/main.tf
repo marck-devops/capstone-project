@@ -53,6 +53,7 @@ resource "aws_instance" "web" {
   vpc_security_group_ids      = [var.web_sg_id]
   associate_public_ip_address = true
   key_name                    = local.key_name
+  iam_instance_profile        = var.web_iam_instance_profile
 
   root_block_device {
     volume_size = 8
@@ -80,6 +81,7 @@ resource "aws_instance" "redis" {
   vpc_security_group_ids      = [var.redis_sg_id]
   associate_public_ip_address = false
   key_name                    = local.key_name
+  iam_instance_profile        = var.redis_iam_instance_profile
 
   root_block_device {
     volume_size = 8
@@ -104,7 +106,7 @@ resource "aws_instance" "redis" {
 # When a setup script changes, only the terraform_data resource is replaced:
 # the provisioner re-runs over SSH against the existing instance. The scripts
 # are idempotent, so re-running them is safe. Terraform connects from wherever
-# `terraform apply` runs, so that IP must be allowed by allowed_ssh_cidr.
+# `terraform apply` runs, so that IP must be in allowed_ssh_cidrs.
 
 locals {
   redis_setup_script = file("${path.module}/templates/redis_setup.sh")

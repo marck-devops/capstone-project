@@ -1,6 +1,10 @@
+environment  = "dev" # must match `terraform workspace show`
 aws_region       = "us-east-2"
 project_name     = "capstone-ex04"
-allowed_ssh_cidr = "203.0.113.10/32" # your public IP
+allowed_ssh_cidrs = [
+  "203.0.113.10/32", # machine that runs terraform (provisioners SSH from here)
+  "198.51.100.7/32", # your workstation (optional)
+]
 
 # NAT gateway (billed hourly). Off by default: redis reaches the package
 # repos through the free S3 gateway endpoint instead.
